@@ -21,10 +21,11 @@ export default class App extends Component {
         let actualStates = this.state.items;
         return actualStates.map((index) => {
             return (
-                <tr>
+                <tr key={index.id}>
                     <td>{index.id}</td>
                     <td>{index.taskName}</td>
                     <td>{index.status}</td>
+                    <td><button onClick={() => { this.updateStatus(index.id) }}>Editar status</button></td>
                 </tr>
             )
         });
@@ -42,18 +43,37 @@ export default class App extends Component {
         let lastIndex = parseInt(actualItems.length) - 1;
         let lastItemCode = parseInt(actualItems[lastIndex].id) + 1;
 
-        let newItem = {
-            id: lastItemCode,
-            taskName: this.state.newItemName,
-            status: "false"
+        if (!!this.state.newItemName) {
+            let newItem = {
+                id: lastItemCode,
+                taskName: this.state.newItemName,
+                status: "false"
+            }
+
+            actualItems.push(newItem);
+
+            this.setState({
+                itemsQuantity: parseInt(this.state.itemsQuantity) + 1,
+                newItemName: "",
+                items: actualItems
+            })
+        } else {
+            alert("Preencha o nome da tarefa.");
         }
+    }
 
-        actualItems.push(newItem);
+    updateStatus(id) {
+        console.log("updateStatus - id: " + id);
+        let actualItems = this.state.items;
+        for (let pos in actualItems) {
+            if (actualItems[pos].id == id) {
+                actualItems[pos].status === "true" ? actualItems[pos].status = "false" : actualItems[pos].status = "true";
 
-        this.setState({
-            itemsQuantity: parseInt(this.state.itemsQuantity) + 1,
-            items: actualItems
-        })
+                this.setState({
+                    items: actualItems
+                })
+            }
+        }
     }
 
     render() {
@@ -64,6 +84,7 @@ export default class App extends Component {
                         <tr>
                             <th>Código</th>
                             <th>Nome</th>
+                            <th>Status</th>
                             <th>Status</th>
                         </tr>
                     </thead>
