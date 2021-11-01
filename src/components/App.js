@@ -31,7 +31,29 @@ export default class App extends Component {
     }
 
     changeName(event) {
-        console.log(event.target.value);
+        this.setState({
+            newItemName: event.target.value
+        });
+    }
+
+    addNewItem() {
+        console.log("addNewItem - insert");
+        let actualItems = this.state.items;
+        let lastIndex = parseInt(actualItems.length) - 1;
+        let lastItemCode = parseInt(actualItems[lastIndex].id) + 1;
+
+        let newItem = {
+            id: lastItemCode,
+            taskName: this.state.newItemName,
+            status: "false"
+        }
+
+        actualItems.push(newItem);
+
+        this.setState({
+            itemsQuantity: parseInt(this.state.itemsQuantity) + 1,
+            items: actualItems
+        })
     }
 
     render() {
@@ -51,6 +73,7 @@ export default class App extends Component {
                 </table>
                 <div>
                     <input value={this.state.newItemName} onChange={(event) => { this.changeName(event) }}></input>
+                    <button onClick={(event) => { this.addNewItem(event) }}>Inserir</button>
                 </div>
             </div >
         )
