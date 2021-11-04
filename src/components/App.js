@@ -66,7 +66,7 @@ export default class App extends Component {
         console.log("updateStatus - id: " + id);
         let actualItems = this.state.items;
         for (let pos in actualItems) {
-            if (actualItems[pos].id == id) {
+            if (actualItems[pos].id === id) {
                 actualItems[pos].status === "true" ? actualItems[pos].status = "false" : actualItems[pos].status = "true";
 
                 this.setState({
